@@ -2,6 +2,8 @@ package deletethis.civilization;
 
 import java.util.ArrayList;
 
+import deletethis.civilization.exception.ResidentAlreadyInTownException;
+import deletethis.civilization.exception.ResidentNotInTownException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
@@ -56,7 +58,14 @@ public class Town
 		{
 			NBTTagCompound residentsIterator = (NBTTagCompound)tagListResidents.get(i);
 			Resident resident = Resident.readFromNBT(residentsIterator);
-			town.addResident(resident);
+			try
+			{
+				town.addResident(resident);
+			}
+			catch (ResidentAlreadyInTownException e)
+			{
+				e.printStackTrace();
+			}
 		}
 		
 		return town;
@@ -74,13 +83,19 @@ public class Town
 		return false;
 	}
 	
-	public void addResident(Resident resident)
+	public void addResident(Resident resident) throws ResidentAlreadyInTownException
 	{
+		if(hasResident(resident))
+			throw new ResidentAlreadyInTownException();
+		
 		residents.add(resident);
 	}
 	
-	public void removeResident(Resident resident)
+	public void removeResident(Resident resident) throws ResidentNotInTownException
 	{
+		if(!hasResident(resident))
+			throw new ResidentNotInTownException();
+		
 		residents.remove(resident);
 	}
 	

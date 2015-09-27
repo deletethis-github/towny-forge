@@ -1,7 +1,10 @@
-package deletethis.civilization;
+package deletethis.civilization.world;
 
 import java.util.ArrayList;
 
+import deletethis.civilization.Town;
+import deletethis.civilization.exception.TownAlreadyExistsException;
+import deletethis.civilization.exception.TownDoesNotExistException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.WorldSavedData;
@@ -26,7 +29,14 @@ public class CivilizationWorldData extends WorldSavedData
 		{
 			NBTTagCompound townsIterator = (NBTTagCompound)tagListTowns.get(i);
 			Town town = Town.readFromNBT(townsIterator);
-			this.addTown(town);
+			try
+			{
+				this.addTown(town);
+			}
+			catch (TownAlreadyExistsException e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -55,14 +65,20 @@ public class CivilizationWorldData extends WorldSavedData
 		return false;
 	}
 	
-	public void addTown(Town town)
+	public void addTown(Town town) throws TownAlreadyExistsException
 	{
+		if(townExists(town))
+			throw new TownAlreadyExistsException();
+		
 		towns.add(town);
 		this.markDirty();
 	}
 	
-	public void removeTown(Town town)
+	public void removeTown(Town town) throws TownDoesNotExistException
 	{
+		if(!townExists(town))
+			throw new TownDoesNotExistException();
+		
 		towns.remove(town);
 		this.markDirty();
 	}
