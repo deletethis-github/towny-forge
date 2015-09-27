@@ -1,0 +1,16 @@
+[
+{
+  "modid": "civilization",
+  "name": "Civilization",
+  "description": "",
+  "version": "dev",
+  "mcversion": "1.8",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["deletethis"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
