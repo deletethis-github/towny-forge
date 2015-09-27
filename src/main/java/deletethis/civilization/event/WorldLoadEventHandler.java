@@ -14,7 +14,7 @@ public class WorldLoadEventHandler
 		CivilizationWorldData data = (CivilizationWorldData)event.world.loadItemData(CivilizationWorldData.class, CivilizationWorldData.IDENTIFIER);
 		if(data == null)
 		{
-			data = new CivilizationWorldData(CivilizationWorldData.IDENTIFIER, event.world);
+			data = new CivilizationWorldData(CivilizationWorldData.IDENTIFIER);
 			event.world.setItemData(CivilizationWorldData.IDENTIFIER, data);
 			// DEBUG TOWN START
 			Town town = new Town("Rome");

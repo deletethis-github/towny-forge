@@ -4,12 +4,9 @@ import java.util.ArrayList;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.World;
 
 public class Town
-{
-	private World world;
-	
+{	
 	private String name;
 	private ArrayList<Resident> residents;
 	
@@ -25,23 +22,8 @@ public class Town
 		this.residents = new ArrayList<Resident>();
 	}
 	
-	public Town(World world)
+	public Town(String name, ArrayList<Resident> residents)
 	{
-		this.world = world;
-		this.name = null;
-		this.residents = new ArrayList<Resident>();
-	}
-	
-	public Town(World world, String name)
-	{
-		this.world = world;
-		this.name = name;
-		this.residents = new ArrayList<Resident>();
-	}
-	
-	public Town(World world, String name, ArrayList<Resident> residents)
-	{
-		this.world = world;
 		this.name = name;
 		this.residents = residents;
 	}
@@ -105,15 +87,5 @@ public class Town
 	public ArrayList<Resident> getResidents()
 	{
 		return residents;
-	}
-	
-	public void setWorld(World world)
-	{
-		this.world = world;
-	}
-	
-	public World getWorld()
-	{
-		return world;
 	}
 }
