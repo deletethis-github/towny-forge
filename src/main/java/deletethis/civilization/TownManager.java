@@ -37,4 +37,9 @@ public class TownManager
 	{
 		return towns;
 	}
+	
+	public void clear()
+	{
+		towns = new ArrayList<Town>();
+	}
 }

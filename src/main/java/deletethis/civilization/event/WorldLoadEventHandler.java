@@ -12,6 +12,8 @@ public class WorldLoadEventHandler
 	@SubscribeEvent
 	public void onWorldLoad(WorldEvent.Load event)
 	{
+		ModCivilization.instance.getTownManager().clear();
+		
 		Town townTest = new Town("Test");
 		Resident deletethis = new Resident("f5fb0f5d-cfb6-418f-ae4b-c53e1539d6ba");
 		townTest.addResident(deletethis);
