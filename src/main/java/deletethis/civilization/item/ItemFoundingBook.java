@@ -66,11 +66,11 @@ public class ItemFoundingBook extends Item
 		}
 		catch (TownAlreadyExistsException e)
 		{
-			UtilMessage.send(player, "A town with the name of " + townname + " already exists!", EnumChatFormatting.RED);
+			UtilMessage.sendSimpleMessage(player, "A town with the name of " + townname + " already exists!", EnumChatFormatting.RED);
 			return stack;
 		}
         
-        UtilMessage.send(player, "You have created the town of " + townname + "!", EnumChatFormatting.AQUA);
+        UtilMessage.sendSimpleMessage(player, "You have created the town of " + townname + "!", EnumChatFormatting.AQUA);
         
 		return stack;
     }
