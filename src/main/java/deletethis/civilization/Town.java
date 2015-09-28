@@ -2,6 +2,8 @@ package deletethis.civilization;
 
 import java.util.ArrayList;
 
+import deletethis.civilization.exception.PlotAlreadyOwnedException;
+import deletethis.civilization.exception.PlotNotOwnedException;
 import deletethis.civilization.exception.ResidentAlreadyInTownException;
 import deletethis.civilization.exception.ResidentNotInTownException;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,23 +13,20 @@ public class Town
 {	
 	private String name;
 	private ArrayList<Resident> residents;
+	private ArrayList<Plot> plots;
 	
 	public Town()
 	{
 		this.name = null;
 		this.residents = new ArrayList<Resident>();
+		this.plots = new ArrayList<Plot>();
 	}
 	
 	public Town(String name)
 	{
 		this.name = name;
 		this.residents = new ArrayList<Resident>();
-	}
-	
-	public Town(String name, ArrayList<Resident> residents)
-	{
-		this.name = name;
-		this.residents = residents;
+		this.plots = new ArrayList<Plot>();
 	}
 	
 	public String getName()
@@ -79,7 +78,7 @@ public class Town
 	public void addResident(Resident resident) throws ResidentAlreadyInTownException
 	{
 		if(hasResident(resident))
-			throw new ResidentAlreadyInTownException();
+			throw new ResidentAlreadyInTownException(resident, this);
 		
 		residents.add(resident);
 	}
@@ -87,7 +86,7 @@ public class Town
 	public void removeResident(Resident resident) throws ResidentNotInTownException
 	{
 		if(!hasResident(resident))
-			throw new ResidentNotInTownException();
+			throw new ResidentNotInTownException(resident, this);
 		
 		residents.remove(resident);
 	}
@@ -95,6 +94,32 @@ public class Town
 	public ArrayList<Resident> getResidents()
 	{
 		return residents;
+	}
+	
+	public boolean hasPlot(Plot plot)
+	{	
+		return plots.contains(plot);
+	}
+	
+	public void addPlot(Plot plot) throws PlotAlreadyOwnedException
+	{
+		if(hasPlot(plot))
+			throw new PlotAlreadyOwnedException(this, plot);
+		
+		plots.add(plot);
+	}
+	
+	public void removePlot(Plot plot) throws PlotNotOwnedException
+	{
+		if(!hasPlot(plot))
+			throw new PlotNotOwnedException(this, plot);
+		
+		plots.remove(plot);
+	}
+	
+	public ArrayList<Plot> getPlots()
+	{
+		return plots;
 	}
 	
 	@Override

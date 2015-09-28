@@ -62,7 +62,7 @@ public class CivilizationWorldData extends WorldSavedData
 	public void addTown(Town town) throws TownAlreadyExistsException
 	{
 		if(townExists(town))
-			throw new TownAlreadyExistsException();
+			throw new TownAlreadyExistsException(town);
 		
 		towns.add(town);
 		this.markDirty();
@@ -71,7 +71,7 @@ public class CivilizationWorldData extends WorldSavedData
 	public void removeTown(Town town) throws TownDoesNotExistException
 	{
 		if(!townExists(town))
-			throw new TownDoesNotExistException();
+			throw new TownDoesNotExistException(town);
 		
 		towns.remove(town);
 		this.markDirty();

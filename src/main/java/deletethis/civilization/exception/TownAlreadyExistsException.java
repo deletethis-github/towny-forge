@@ -1,16 +1,24 @@
 package deletethis.civilization.exception;
 
-public class TownAlreadyExistsException extends CivilizationException
+import deletethis.civilization.Town;
+
+public class TownAlreadyExistsException extends Exception
 {
 	private static final long serialVersionUID = 4967435377063343813L;
-
-	public TownAlreadyExistsException()
+	private Town town;
+	
+	public TownAlreadyExistsException(Town town)
 	{
-		super("Town already exists.");
+		setTown(town);
 	}
 	
-	public TownAlreadyExistsException(String message)
+	public void setTown(Town town)
 	{
-		super(message);
+		this.town = town;
+	}
+	
+	public Town getTown()
+	{
+		return town;
 	}
 }

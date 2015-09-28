@@ -10,12 +10,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 
 public class ItemFoundingBook extends Item
 {
@@ -25,10 +21,10 @@ public class ItemFoundingBook extends Item
 	}
 	
 	@Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
     {
 		if(!stack.hasTagCompound())
-			return false;
+			return stack;
 		
         CivilizationWorldData data = CivilizationWorldData.get(world);
         
@@ -42,12 +38,12 @@ public class ItemFoundingBook extends Item
 		catch (TownAlreadyExistsException e)
 		{
 			UtilMessage.send(player, "A town with the name of " + townname + " already exists!", EnumChatFormatting.RED);
-			return false;
+			return stack;
 		}
         
         UtilMessage.send(player, "You have created the town of " + townname + "!", EnumChatFormatting.AQUA);
         
-		return true;
+		return stack;
     }
 	
 	@Override

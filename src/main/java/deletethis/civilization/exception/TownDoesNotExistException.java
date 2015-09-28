@@ -1,16 +1,24 @@
 package deletethis.civilization.exception;
 
-public class TownDoesNotExistException extends CivilizationException
+import deletethis.civilization.Town;
+
+public class TownDoesNotExistException extends Exception
 {
 	private static final long serialVersionUID = -3218438269446275073L;
-
-	public TownDoesNotExistException()
+	private Town town;
+	
+	public TownDoesNotExistException(Town town)
 	{
-		super("Town does not exist.");
+		setTown(town);
 	}
 	
-	public TownDoesNotExistException(String message)
+	public void setTown(Town town)
 	{
-		super(message);
+		this.town = town;
+	}
+	
+	public Town getTown()
+	{
+		return town;
 	}
 }

@@ -1,16 +1,37 @@
 package deletethis.civilization.exception;
 
-public class ResidentAlreadyInTownException extends CivilizationException
+import deletethis.civilization.Resident;
+import deletethis.civilization.Town;
+
+public class ResidentAlreadyInTownException extends Exception
 {
 	private static final long serialVersionUID = -8936717534099035177L;
-
-	public ResidentAlreadyInTownException()
+	private Resident resident;
+	private Town town;
+	
+	public ResidentAlreadyInTownException(Resident resident, Town town)
 	{
-		super("Resident is already in this town.");
+		setResident(resident);
+		setTown(town);
 	}
 	
-	public ResidentAlreadyInTownException(String message)
+	public void setTown(Town town)
 	{
-		super(message);
+		this.town = town;
+	}
+	
+	public Town getTown()
+	{
+		return town;
+	}
+	
+	public void setResident(Resident resident)
+	{
+		this.resident = resident;
+	}
+	
+	public Resident getResident()
+	{
+		return resident;
 	}
 }
