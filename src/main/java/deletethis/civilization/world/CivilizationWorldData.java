@@ -7,6 +7,7 @@ import deletethis.civilization.exception.TownAlreadyExistsException;
 import deletethis.civilization.exception.TownDoesNotExistException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 
 public class CivilizationWorldData extends WorldSavedData
@@ -55,14 +56,7 @@ public class CivilizationWorldData extends WorldSavedData
 	
 	public boolean townExists(Town town)
 	{
-		for(Town i : towns)
-		{
-			if(i.getName() == town.getName())
-			{
-				return true;
-			}
-		}
-		return false;
+		return towns.contains(town);
 	}
 	
 	public void addTown(Town town) throws TownAlreadyExistsException
@@ -86,5 +80,16 @@ public class CivilizationWorldData extends WorldSavedData
 	public ArrayList<Town> getTowns()
 	{
 		return towns;
+	}
+	
+	public static CivilizationWorldData get(World world)
+	{
+		CivilizationWorldData data = (CivilizationWorldData)world.loadItemData(CivilizationWorldData.class, CivilizationWorldData.IDENTIFIER);
+		if(data == null)
+		{
+			data = new CivilizationWorldData(CivilizationWorldData.IDENTIFIER);
+			world.setItemData(CivilizationWorldData.IDENTIFIER, data);
+		}
+		return data;
 	}
 }

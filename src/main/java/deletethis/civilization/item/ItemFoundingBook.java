@@ -23,12 +23,12 @@ public class ItemFoundingBook extends Item
 	}
 	
 	@Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
 		if(!stack.hasTagCompound())
 			return false;
 	
-        CivilizationWorldData data = (CivilizationWorldData)worldIn.loadItemData(CivilizationWorldData.class, CivilizationWorldData.IDENTIFIER);
+        CivilizationWorldData data = CivilizationWorldData.get(world);
         
         String townname = stack.getTagCompound().getString("townname");
         Town town = new Town(townname);
@@ -39,20 +39,20 @@ public class ItemFoundingBook extends Item
 		}
 		catch (TownAlreadyExistsException e)
 		{
-			if(!worldIn.isRemote)
+			if(!world.isRemote)
 			{
 				ChatComponentText message = new ChatComponentText("A town with the name " + townname + " already exists!");
 				message.getChatStyle().setColor(EnumChatFormatting.RED);
-				playerIn.addChatMessage(message);
+				player.addChatMessage(message);
 			}
 			return false;
 		}
         
-		if(!worldIn.isRemote)
+		if(!world.isRemote)
 		{
 			ChatComponentText message = new ChatComponentText("You have created the town of " + townname + "!");
 			message.getChatStyle().setColor(EnumChatFormatting.GREEN);
-			playerIn.addChatMessage(message);
+			player.addChatMessage(message);
 		}
 		return true;
     }

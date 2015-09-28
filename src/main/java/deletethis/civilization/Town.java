@@ -72,15 +72,8 @@ public class Town
 	}
 	
 	public boolean hasResident(Resident resident)
-	{
-		for(Resident i : residents)
-		{
-			if(i.getUUID() == resident.getUUID())
-			{
-				return true;
-			}
-		}
-		return false;
+	{	
+		return residents.contains(resident);
 	}
 	
 	public void addResident(Resident resident) throws ResidentAlreadyInTownException
@@ -102,5 +95,30 @@ public class Town
 	public ArrayList<Resident> getResidents()
 	{
 		return residents;
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		int hash = 21;
+		hash *= 56 * name.hashCode();
+		//hash *= 56 * residents.hashCode();
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(Object object)
+	{
+		if(object == null)
+			return false;
+		if(!(object instanceof Town))
+			return false;
+		
+		Town that = (Town) object;
+		
+		if(!this.getName().equals(that.getName())) return false;
+		//if(!this.getResidents().equals(that.getResidents())) return false;
+		
+		return true;
 	}
 }
