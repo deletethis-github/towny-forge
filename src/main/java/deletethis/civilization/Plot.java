@@ -1,6 +1,10 @@
 package deletethis.civilization;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 public class Plot
 {
@@ -13,6 +17,25 @@ public class Plot
 		this.dimension = dimension;
 		this.x = x;
 		this.z = z;
+	}
+	
+	public boolean isInPlot(EntityPlayer player)
+	{
+		if(!(player.worldObj.provider.getDimensionId() == dimension)) return false;
+		
+		int playerChunkX = player.worldObj.getChunkFromBlockCoords(player.playerLocation).xPosition;
+		int playerChunkZ = player.worldObj.getChunkFromBlockCoords(player.playerLocation).zPosition;
+		if(this.x != playerChunkX || this.z != playerChunkZ) return false;
+		
+		return true;
+	}
+	
+	public boolean isInPlot(World world, BlockPos pos)
+	{
+		if(!(world.provider.getDimensionId() == dimension)) return false;
+		
+		Chunk chunk = world.getChunkFromBlockCoords(pos);
+		return chunk.xPosition == this.x && chunk.zPosition == this.z;
 	}
 	
 	public void writeToNBT(NBTTagCompound nbt)
