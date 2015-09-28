@@ -12,13 +12,13 @@ public class ModItems
 	
 	public static void registerItems()
 	{
-		itemFoundingBook = (ItemFoundingBook)new ItemFoundingBook().setUnlocalizedName("founding_book");
-		GameRegistry.registerItem(itemFoundingBook, "founding_book");
+		itemFoundingBook = (ItemFoundingBook)new ItemFoundingBook();
+		GameRegistry.registerItem(itemFoundingBook, itemFoundingBook.getUnlocalizedName().substring(5));
 	}
 	
 	public static void registerItemModels()
 	{
 		ItemModelMesher m = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-		m.register(ModItems.itemFoundingBook, 0, new ModelResourceLocation(ModInfo.ID + ":" + "founding_book", "inventory"));
+		m.register(ModItems.itemFoundingBook, 0, new ModelResourceLocation(ModInfo.ID + ":" + itemFoundingBook.getUnlocalizedName().substring(5), "inventory"));
 	}
 }
