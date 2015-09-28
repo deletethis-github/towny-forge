@@ -1,7 +1,5 @@
 package deletethis.civilization.util;
 
-import deletethis.civilization.chat.ChatComponentTown;
-import deletethis.civilization.chat.ChatComponentWarning;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -20,17 +18,35 @@ public class UtilMessage
 		}	
 	}
 	
-	public static void sendBlockEventWarning(EntityPlayer player, String townName)
+	public static void sendTownCreatedMessage(EntityPlayer player, String town)
 	{
-		ChatComponentText message = new ChatComponentText("");
-		ChatComponentWarning one = new ChatComponentWarning("That block lies within a plot that is owned by ");
-		ChatComponentTown town = new ChatComponentTown(townName);
-		ChatComponentWarning end = new ChatComponentWarning("!");
-		
-		message.appendSibling(one);
-		message.appendSibling(town);
-		message.appendSibling(end);
-		
-		player.addChatMessage(message);
+		World world = player.worldObj;
+		if(!world.isRemote)
+		{
+			ChatComponentText message = new ChatComponentText("The town of ");
+			ChatComponentText one = new ChatComponentText(town);
+			one.getChatStyle().setItalic(true);
+			ChatComponentText two = new ChatComponentText(" has been created!");
+			message.appendSibling(one);
+			message.appendSibling(two);
+			message.getChatStyle().setColor(EnumChatFormatting.AQUA);
+			player.addChatMessage(message);
+		}
+	}
+	
+	public static void sendTownAlreadyExistsMessage(EntityPlayer player, String town)
+	{
+		World world = player.worldObj;
+		if(!world.isRemote)
+		{
+			ChatComponentText message = new ChatComponentText("A town with the name of ");
+			ChatComponentText one = new ChatComponentText(town);
+			one.getChatStyle().setItalic(true);
+			ChatComponentText two = new ChatComponentText(" already exists!");
+			message.appendSibling(one);
+			message.appendSibling(two);
+			message.getChatStyle().setColor(EnumChatFormatting.RED);
+			player.addChatMessage(message);
+		}
 	}
 }

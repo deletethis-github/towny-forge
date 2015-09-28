@@ -3,7 +3,6 @@ package deletethis.civilization.handler;
 import deletethis.civilization.Plot;
 import deletethis.civilization.Resident;
 import deletethis.civilization.Town;
-import deletethis.civilization.util.UtilMessage;
 import deletethis.civilization.world.CivilizationWorldData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
@@ -31,6 +30,7 @@ public class BlockEventHandler
 				{
 					if(plot.isInPlot(world, pos) && !town.hasResident(resident))
 					{
+						//Disabled for now
 						//UtilMessage.sendBlockEventWarning(player, town.getName());
 						event.setCanceled(true);
 					}
@@ -56,6 +56,7 @@ public class BlockEventHandler
 				{
 					if(plot.isInPlot(world, pos) && !town.hasResident(resident))
 					{
+						//Disabled for now
 						//UtilMessage.sendBlockEventWarning(player, town.getName());
 						event.setCanceled(true);
 					}

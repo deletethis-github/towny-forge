@@ -14,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class ItemFoundingBook extends Item
@@ -66,11 +65,11 @@ public class ItemFoundingBook extends Item
 		}
 		catch (TownAlreadyExistsException e)
 		{
-			UtilMessage.sendSimpleMessage(player, "A town with the name of " + townname + " already exists!", EnumChatFormatting.RED);
+			 UtilMessage.sendTownAlreadyExistsMessage(player, town.getName());
 			return stack;
 		}
         
-        UtilMessage.sendSimpleMessage(player, "You have created the town of " + townname + "!", EnumChatFormatting.AQUA);
+        UtilMessage.sendTownCreatedMessage(player, town.getName());
         
 		return stack;
     }
