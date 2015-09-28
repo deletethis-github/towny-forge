@@ -37,6 +37,7 @@ public class Town
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		nbt.setString("name", name);
+		
 		NBTTagList tagListResidents = new NBTTagList();
 		for(Resident residentsIterator : this.getResidents())
 		{
@@ -45,6 +46,15 @@ public class Town
 			tagListResidents.appendTag(tagResident);
 		}
 		nbt.setTag("residents", tagListResidents);
+		
+		NBTTagList tagListPlots = new NBTTagList();
+		for(Plot plotsIterator : this.getPlots())
+		{
+			NBTTagCompound tagPlot = new NBTTagCompound();
+			plotsIterator.writeToNBT(tagPlot);
+			tagListPlots.appendTag(tagPlot);
+		}
+		nbt.setTag("plots", tagListPlots);
 	}
 
 	public static Town readFromNBT(NBTTagCompound nbt)
@@ -63,7 +73,20 @@ public class Town
 			}
 			catch (ResidentAlreadyInTownException e)
 			{
-				e.printStackTrace();
+			}
+		}
+		
+		NBTTagList tagListPlots = nbt.getTagList("plots", 10);
+		for(int i = 0; i < tagListPlots.tagCount(); i++)
+		{
+			NBTTagCompound plotsIterator = (NBTTagCompound)tagListPlots.get(i);
+			Plot plot = Plot.readFromNBT(plotsIterator);
+			try
+			{
+				town.addPlot(plot);
+			}
+			catch (PlotAlreadyOwnedException e)
+			{
 			}
 		}
 		

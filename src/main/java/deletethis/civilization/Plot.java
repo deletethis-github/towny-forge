@@ -4,26 +4,40 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class Plot
 {
+	private int dimension;
 	private int x, z;
 	private Town town;
 	
-	public Plot(int x, int z)
+	public Plot(int dimension, int x, int z)
 	{
+		this.dimension = dimension;
 		this.x = x;
 		this.z = z;
 	}
 	
 	public void writeToNBT(NBTTagCompound nbt)
 	{
+		nbt.setInteger("dimension", dimension);
 		nbt.setInteger("x", x);
 		nbt.setInteger("z", z);
 	}
 	
 	public static Plot readFromNBT(NBTTagCompound nbt)
 	{
+		int dimension = nbt.getInteger("dimension");
 		int x = nbt.getInteger("x");
 		int z = nbt.getInteger("z");
-		return new Plot(x, z);		
+		return new Plot(dimension, x, z);
+	}
+	
+	public void setDimension(int dimension)
+	{
+		this.dimension = dimension;
+	}
+	
+	public int getDimension()
+	{
+		return dimension;
 	}
 	
 	public void setX(int x)
