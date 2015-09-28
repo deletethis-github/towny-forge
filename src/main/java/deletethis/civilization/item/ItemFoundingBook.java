@@ -4,6 +4,7 @@ import java.util.List;
 
 import deletethis.civilization.Town;
 import deletethis.civilization.exception.TownAlreadyExistsException;
+import deletethis.civilization.util.UtilMessage;
 import deletethis.civilization.world.CivilizationWorldData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -14,6 +15,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 
 public class ItemFoundingBook extends Item
 {
@@ -27,7 +29,7 @@ public class ItemFoundingBook extends Item
     {
 		if(!stack.hasTagCompound())
 			return false;
-	
+		
         CivilizationWorldData data = CivilizationWorldData.get(world);
         
         String townname = stack.getTagCompound().getString("townname");
@@ -39,21 +41,12 @@ public class ItemFoundingBook extends Item
 		}
 		catch (TownAlreadyExistsException e)
 		{
-			if(!world.isRemote)
-			{
-				ChatComponentText message = new ChatComponentText("A town with the name " + townname + " already exists!");
-				message.getChatStyle().setColor(EnumChatFormatting.RED);
-				player.addChatMessage(message);
-			}
+			UtilMessage.send(player, "A town with the name of " + townname + " already exists!", EnumChatFormatting.RED);
 			return false;
 		}
         
-		if(!world.isRemote)
-		{
-			ChatComponentText message = new ChatComponentText("You have created the town of " + townname + "!");
-			message.getChatStyle().setColor(EnumChatFormatting.GREEN);
-			player.addChatMessage(message);
-		}
+        UtilMessage.send(player, "You have created the town of " + townname + "!", EnumChatFormatting.AQUA);
+        
 		return true;
     }
 	
