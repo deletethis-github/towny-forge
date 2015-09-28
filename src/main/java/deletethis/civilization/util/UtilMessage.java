@@ -1,5 +1,6 @@
 package deletethis.civilization.util;
 
+import deletethis.civilization.chat.ChatComponentTown;
 import deletethis.civilization.chat.ChatComponentWarning;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
@@ -19,8 +20,17 @@ public class UtilMessage
 		}	
 	}
 	
-	public static void sendCantBreakBlockMessage(EntityPlayer player)
+	public static void sendBlockEventWarning(EntityPlayer player, String townName)
 	{
-		player.addChatMessage(new ChatComponentWarning("You can't break that block!"));
+		ChatComponentText message = new ChatComponentText("");
+		ChatComponentWarning one = new ChatComponentWarning("That block lies within a plot that is owned by ");
+		ChatComponentTown town = new ChatComponentTown(townName);
+		ChatComponentWarning end = new ChatComponentWarning("!");
+		
+		message.appendSibling(one);
+		message.appendSibling(town);
+		message.appendSibling(end);
+		
+		player.addChatMessage(message);
 	}
 }

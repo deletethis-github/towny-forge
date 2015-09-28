@@ -12,7 +12,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class BlockBreakEventHandler
+public class BlockEventHandler
 {
 	@SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
 	public void onBlockBreak(BlockEvent.BreakEvent event)
@@ -31,7 +31,32 @@ public class BlockBreakEventHandler
 				{
 					if(plot.isInPlot(world, pos) && !town.hasResident(resident))
 					{
-						UtilMessage.sendCantBreakBlockMessage(player);
+						//UtilMessage.sendBlockEventWarning(player, town.getName());
+						event.setCanceled(true);
+					}
+				}
+			}
+		}
+	}
+	
+	@SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
+	public void onBlockPlaced(BlockEvent.PlaceEvent event)
+	{
+		EntityPlayer player = event.player;
+		Resident resident = new Resident(player.getGameProfile().getId().toString());
+		World world = player.worldObj;
+		BlockPos pos = event.pos;
+		CivilizationWorldData data = CivilizationWorldData.get(world);
+		
+		if(!world.isRemote)
+		{
+			for(Town town : data.getTowns())
+			{
+				for(Plot plot : town.getPlots())
+				{
+					if(plot.isInPlot(world, pos) && !town.hasResident(resident))
+					{
+						//UtilMessage.sendBlockEventWarning(player, town.getName());
 						event.setCanceled(true);
 					}
 				}
