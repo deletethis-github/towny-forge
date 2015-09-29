@@ -20,15 +20,25 @@ public class ModItems
 	
 	public static void addVariantNames()
 	{
-		ModelBakery.addVariantName(itemTownBook, 
-			ModInfo.ID + ":" + itemTownBook.getUnlocalizedName(new ItemStack(itemTownBook, 1, 0)).substring(5), 
-			ModInfo.ID + ":" + itemTownBook.getUnlocalizedName(new ItemStack(itemTownBook, 1, 1)).substring(5));
+		String[] itemTownBookVariantUnlocalizedNames = new String[ItemTownBook.EnumVariant.index.length];
+		for(int i = 0; i < ItemTownBook.EnumVariant.index.length; i++)
+		{
+			ItemTownBook.EnumVariant variant = ItemTownBook.EnumVariant.index[i];
+			ItemStack stack = new ItemStack(itemTownBook, 1, variant.getMetaData());
+			itemTownBookVariantUnlocalizedNames[i] = ModInfo.ID + ":" +  itemTownBook.getUnlocalizedName(stack).substring(5);
+		}
+		ModelBakery.addVariantName(itemTownBook, itemTownBookVariantUnlocalizedNames);
 	}
 	
 	public static void registerItemModels()
 	{
 		ItemModelMesher m = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-		m.register(ModItems.itemTownBook, 0, new ModelResourceLocation(ModInfo.ID + ":" + itemTownBook.getUnlocalizedName(new ItemStack(itemTownBook, 1, 0)).substring(5), "inventory"));
-		m.register(ModItems.itemTownBook, 1, new ModelResourceLocation(ModInfo.ID + ":" + itemTownBook.getUnlocalizedName(new ItemStack(itemTownBook, 1, 1)).substring(5), "inventory"));
+		
+		for(ItemTownBook.EnumVariant variant : ItemTownBook.EnumVariant.index)
+		{
+			ItemStack stack = new ItemStack(itemTownBook, 1, variant.getMetaData());
+			ModelResourceLocation model = new ModelResourceLocation(ModInfo.ID + ":" + itemTownBook.getUnlocalizedName(stack).substring(5), "inventory");
+			m.register(itemTownBook, variant.getMetaData(), model);
+		}
 	}
 }

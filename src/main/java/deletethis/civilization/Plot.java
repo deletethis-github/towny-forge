@@ -83,6 +83,11 @@ public class Plot
 		return z;
 	}
 	
+	public boolean isOwned()
+	{
+		return town == null ? false : true;
+	}
+	
 	public void setTown(Town town)
 	{
 		this.town = town;
@@ -97,8 +102,9 @@ public class Plot
 	public int hashCode()
 	{
 		int hash = 21;
-		hash *= 56 * x;
-		hash *= 56 * z;
+		hash *= 56 + dimension;
+		hash *= 56 + x;
+		hash *= 56 + z;
 		return hash;
 	}
 	

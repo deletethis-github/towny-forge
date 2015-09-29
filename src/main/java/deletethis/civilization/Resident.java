@@ -31,7 +31,7 @@ public class Resident
 	public int hashCode()
 	{
 		int hash = 21;
-		hash *= 56 * uuid.hashCode();
+		hash *= 56 + uuid.hashCode();
 		return hash;
 	}
 	
