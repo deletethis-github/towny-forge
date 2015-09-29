@@ -3,13 +3,13 @@ package deletethis.civilization.exception;
 import deletethis.civilization.Plot;
 import deletethis.civilization.Town;
 
-public class PlotNotOwnedException extends Exception
+public class PlotNotRegisteredException extends Exception
 {
 	private static final long serialVersionUID = -7474189000862288576L;
 	private Town town;
 	private Plot plot;
 	
-	public PlotNotOwnedException(Town town, Plot plot)
+	public PlotNotRegisteredException(Town town, Plot plot)
 	{
 		setTown(town);
 		setPlot(plot);

@@ -49,4 +49,20 @@ public class UtilMessage
 			player.addChatMessage(message);
 		}
 	}
+	
+	public static void sendPlotAlreadyHasOwnerMessage(EntityPlayer player, String town)
+	{
+		World world = player.worldObj;
+		if(!world.isRemote)
+		{
+			ChatComponentText message = new ChatComponentText("This plot is already owned by ");
+			ChatComponentText one = new ChatComponentText(town);
+			one.getChatStyle().setItalic(true);
+			ChatComponentText two = new ChatComponentText("! You can't create a town here.");
+			message.appendSibling(one);
+			message.appendSibling(two);
+			message.getChatStyle().setColor(EnumChatFormatting.RED);
+			player.addChatMessage(message);
+		}
+	}
 }

@@ -3,13 +3,13 @@ package deletethis.civilization.exception;
 import deletethis.civilization.Plot;
 import deletethis.civilization.Town;
 
-public class PlotAlreadyOwnedException extends Exception
+public class PlotAlreadyRegisteredException extends Exception
 {
 	private static final long serialVersionUID = 6417998817146315881L;
 	private Town town;
 	private Plot plot;
 	
-	public PlotAlreadyOwnedException(Town town, Plot plot)
+	public PlotAlreadyRegisteredException(Town town, Plot plot)
 	{
 		setTown(town);
 		setPlot(plot);
