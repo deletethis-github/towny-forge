@@ -32,6 +32,14 @@ public class ItemTownBook extends Item
 		
 		public static final EnumVariant[] index = new EnumVariant[values().length];
 		
+		static
+		{
+			for (EnumVariant value : values())
+			{
+				index[value.getMetaData()] = value;
+			}
+		}
+		
 		public int getMetaData()
 		{
 			return metadata;
