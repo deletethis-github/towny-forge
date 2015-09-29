@@ -7,6 +7,7 @@ public class ClientProxy extends CommonProxy
 	public void preInit()
 	{
 		super.preInit();
+		ModItems.addVariantNames();
 	}
 	
 	public void init()

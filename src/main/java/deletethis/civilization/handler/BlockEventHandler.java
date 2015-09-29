@@ -30,8 +30,6 @@ public class BlockEventHandler
 				{
 					if(plot.isInPlot(world, pos) && !town.hasResident(resident))
 					{
-						//Disabled for now
-						//UtilMessage.sendBlockEventWarning(player, town.getName());
 						event.setCanceled(true);
 					}
 				}
@@ -56,8 +54,6 @@ public class BlockEventHandler
 				{
 					if(plot.isInPlot(world, pos) && !town.hasResident(resident))
 					{
-						//Disabled for now
-						//UtilMessage.sendBlockEventWarning(player, town.getName());
 						event.setCanceled(true);
 					}
 				}
