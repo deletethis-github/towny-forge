@@ -2,10 +2,13 @@ package deletethis.civilization.item;
 
 import java.util.List;
 
+import deletethis.civilization.Plot;
 import deletethis.civilization.Town;
 import deletethis.civilization.exception.PlotAlreadyHasOwnerException;
+import deletethis.civilization.exception.PlotAlreadyRegisteredException;
 import deletethis.civilization.exception.TownAlreadyExistsException;
 import deletethis.civilization.util.UtilMessage;
+import deletethis.civilization.world.CivilizationWorldData;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -51,38 +54,64 @@ public class ItemTownBook extends Item
 		if(!stack.hasTagCompound())
 			return stack;
 		
-		if(stack.getMetadata() != 0)
-			return stack;
-		
-		String townname = stack.getTagCompound().getString("townname");
-		
-		try
+		if(stack.getMetadata() == 0)
 		{
-			Town.create(townname, world, player);
-		}
-		catch (TownAlreadyExistsException e)
-		{
-			UtilMessage.sendTownAlreadyExistsMessage(player, townname);
-			return stack;
-		}
-		catch (PlotAlreadyHasOwnerException e)
-		{
-			UtilMessage.sendPlotAlreadyHasOwnerMessage(player, e.getTown().getName());
-			return stack;
-		}
-        
-		if(!world.isRemote)
-		{
-			@SuppressWarnings({ "unchecked" })
-			List<EntityPlayerMP> list = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
-			for (EntityPlayerMP iteratorPlayer : list)
+			String townname = stack.getTagCompound().getString("townname");
+			
+			try
 			{
-				UtilMessage.sendTownCreatedMessage(iteratorPlayer, townname);
+				Town.create(townname, world, player);
+			}
+			catch (TownAlreadyExistsException e)
+			{
+				UtilMessage.sendTownAlreadyExistsMessage(player, townname);
+				return stack;
+			}
+			catch (PlotAlreadyHasOwnerException e)
+			{
+				UtilMessage.sendCantCreateTownHereMessage(player, e.getTown().getName());
+				return stack;
+			}
+	        
+			if(!world.isRemote)
+			{
+				@SuppressWarnings({ "unchecked" })
+				List<EntityPlayerMP> list = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+				for (EntityPlayerMP iteratorPlayer : list)
+				{
+					UtilMessage.sendTownCreatedMessage(iteratorPlayer, townname);
+				}
+			}
+	
+			stack.setItemDamage(1);
+			stack.getTagCompound().setString("founder", player.getGameProfile().getName());
+			
+			return stack;
+		}
+		else if(stack.getMetadata() == 1)
+		{
+			Town town = new Town(stack.getTagCompound().getString("townname"));
+			CivilizationWorldData data = CivilizationWorldData.get(world);
+			for(Town townIterator : data.getTowns())
+			{
+				if(townIterator.equals(town))
+					town = townIterator;
+			}
+	        int dimension = world.provider.getDimensionId();
+	        int x = world.getChunkFromBlockCoords(player.getPosition()).xPosition;
+	        int z = world.getChunkFromBlockCoords(player.getPosition()).zPosition;
+	        Plot plot = new Plot(dimension, x, z);
+	        
+			try {town.addPlot(plot, data.getTowns());}
+			catch (PlotAlreadyRegisteredException e) 
+			{
+				UtilMessage.sendYouAlreadyOwnThisPlotMessage(player);
+			}
+			catch (PlotAlreadyHasOwnerException e)
+			{
+				UtilMessage.sendCantAddThisPlotMessage(player, e.getTown().getName());
 			}
 		}
-
-		stack.setItemDamage(1);
-		stack.getTagCompound().setString("founder", player.getGameProfile().getName());
 		
 		return stack;
     }

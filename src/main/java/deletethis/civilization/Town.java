@@ -86,13 +86,8 @@ public class Town
 		{
 			NBTTagCompound plotsIterator = (NBTTagCompound)tagListPlots.get(i);
 			Plot plot = Plot.readFromNBT(plotsIterator);
-			try
-			{
-				town.addPlot(plot);
-			}
-			catch (PlotAlreadyRegisteredException e)
-			{
-			}
+			try {town.addPlot(plot);}
+			catch (PlotAlreadyRegisteredException e) {}
 		}
 		
 		return town;
@@ -133,6 +128,24 @@ public class Town
 	{
 		if(hasPlot(plot))
 			throw new PlotAlreadyRegisteredException(this, plot);
+		
+		plots.add(plot);
+	}
+	
+	//Having to pass the ArrayList of Towns is necessary because we get a stack overflow error 
+	//if we call CivilizationWorldData.get() within addPlot()
+	//I guess because we call addPlot() when reading the world data NBT?
+	//which is done when calling CivilizationWorldData.get()
+	public void addPlot(Plot plot, ArrayList<Town> towns) throws PlotAlreadyRegisteredException, PlotAlreadyHasOwnerException
+	{
+		if(hasPlot(plot))
+			throw new PlotAlreadyRegisteredException(this, plot);
+		
+		for(Town t : towns)
+		{
+			if(t.hasPlot(plot))
+				throw new PlotAlreadyHasOwnerException(t, plot);
+		}	
 		
 		plots.add(plot);
 	}
