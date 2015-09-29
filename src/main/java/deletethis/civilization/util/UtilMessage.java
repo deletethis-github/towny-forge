@@ -92,4 +92,15 @@ public class UtilMessage
 			player.addChatMessage(message);
 		}
 	}
+	
+	public static void sendPlotAcquiredMessage(EntityPlayer player)
+	{
+		World world = player.worldObj;
+		if(!world.isRemote)
+		{
+			ChatComponentText message = new ChatComponentText("Plot acquired!");
+			message.getChatStyle().setColor(EnumChatFormatting.GREEN);
+			player.addChatMessage(message);
+		}
+	}
 }

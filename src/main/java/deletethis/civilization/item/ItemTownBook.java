@@ -106,11 +106,15 @@ public class ItemTownBook extends Item
 			catch (PlotAlreadyRegisteredException e) 
 			{
 				UtilMessage.sendYouAlreadyOwnThisPlotMessage(player);
+				return stack;
 			}
 			catch (PlotAlreadyHasOwnerException e)
 			{
 				UtilMessage.sendCantAddThisPlotMessage(player, e.getTown().getName());
+				return stack;
 			}
+			
+			UtilMessage.sendPlotAcquiredMessage(player);
 		}
 		
 		return stack;
