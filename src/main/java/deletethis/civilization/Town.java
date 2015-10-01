@@ -117,6 +117,11 @@ public class Town
 		return plots;
 	}
 	
+	public int getPlotCount()
+	{
+		return plots.size();
+	}
+	
 	@Override
 	public int hashCode()
 	{

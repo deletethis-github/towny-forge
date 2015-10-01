@@ -110,7 +110,7 @@ public class ItemTownBook extends Item
 				stack.setTagCompound(nbt);	
 			}
 
-			String townName = nbt.getString("townname");
+			String townName = nbt.getString("townName");
 			
 			if(townName.isEmpty())
 			{
@@ -139,6 +139,7 @@ public class ItemTownBook extends Item
 			
 			stack.setItemDamage(EnumVariant.CREATED.getMetaData());
 			nbt.setString("founder", player.getGameProfile().getName());
+			nbt.setString("plotCount", Integer.toString(town.getPlotCount()));
 
 			if(!world.isRemote)
 			{
@@ -163,7 +164,7 @@ public class ItemTownBook extends Item
 				stack.setTagCompound(nbt);	
 			}
 			
-			String townName = nbt.getString("townname");
+			String townName = nbt.getString("townName");
 			
 			if(townName.isEmpty())
 				return stack;
@@ -175,6 +176,7 @@ public class ItemTownBook extends Item
 				return stack;
 			
 			Plot plot = CivilizationObjectFactory.createPlot(world, player.getPosition());
+			plot.setTown(town);
 			
 			if(town.hasPlot(plot))
 			{
@@ -189,6 +191,7 @@ public class ItemTownBook extends Item
 			}
 			
 			town.addPlot(plot);
+			nbt.setString("plotCount", Integer.toString(town.getPlotCount()));
 			CivilizationMessageSender.send(player, EnumMessage.PLOT_ACQUIRED);
 			
 			return stack;
@@ -209,7 +212,7 @@ public class ItemTownBook extends Item
 			stack.setTagCompound(nbt);	
 		}
 		
-		String townName = nbt.getString("townname");
+		String townName = nbt.getString("townName");
 		
 		if(!townName.isEmpty())
 		{
@@ -220,6 +223,12 @@ public class ItemTownBook extends Item
 		if(!founder.isEmpty())
 		{
 			tooltip.add("Founder: " + founder);
+		}
+		
+		String plotCount = nbt.getString("plotCount");
+		if(!plotCount.isEmpty())
+		{
+			tooltip.add("Plots: " + plotCount);
 		}
 	}
 }
