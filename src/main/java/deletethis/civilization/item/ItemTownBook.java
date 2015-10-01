@@ -84,7 +84,7 @@ public class ItemTownBook extends Item
 	public String getUnlocalizedName(ItemStack stack)
 	{
 		EnumVariant variant = getVariantFromMetadata(stack.getMetadata());
-		return variant.getUnlocalizedName();
+		return "item." + variant.getUnlocalizedName();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -99,13 +99,16 @@ public class ItemTownBook extends Item
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
-    {
+    {	
 		if(stack.getMetadata() == ItemTownBook.EnumVariant.CREATABLE.getMetaData())
 		{
 			CivilizationWorldData data = CivilizationWorldData.get(world);
 			Plot plot = CivilizationObjectFactory.createPlot(world, player.playerLocation);
 			NBTTagCompound nbt = stack.getTagCompound();
 			String townName = nbt.getString("townname");
+			
+			if(nbt == null || townName.isEmpty())
+				return stack;
 			
 			if(data.townExists(townName))
 			{
@@ -147,7 +150,8 @@ public class ItemTownBook extends Item
 			
 			Town town = data.getTown(townName);
 			
-			if(town == null) return stack;
+			if(nbt == null || townName.isEmpty() || town == null)
+				return stack;
 			
 			if(town.hasPlot(plot))
 			{
@@ -176,11 +180,14 @@ public class ItemTownBook extends Item
 		stack.setTagCompound(new NBTTagCompound());
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings("unchecked")
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List tooltip, boolean advanced) 
+	public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List tooltip, boolean advanced) 
 	{
 		NBTTagCompound nbt = stack.getTagCompound();
+		
+		if(nbt == null) return;
+		
 		String townName = nbt.getString("townname");
 		if(!townName.isEmpty())
 		{
