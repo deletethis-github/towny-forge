@@ -103,7 +103,7 @@ public class ItemTownBook extends Item
 		if(stack.getMetadata() == ItemTownBook.EnumVariant.CREATABLE.getMetaData())
 		{
 			CivilizationWorldData data = CivilizationWorldData.get(world);
-			Plot plot = CivilizationObjectFactory.createPlot(world, player.playerLocation);
+			Plot plot = CivilizationObjectFactory.createPlot(world, player.getPosition());
 			NBTTagCompound nbt = stack.getTagCompound();
 			String townName = nbt.getString("townname");
 			
@@ -144,7 +144,7 @@ public class ItemTownBook extends Item
 		if(stack.getMetadata() == ItemTownBook.EnumVariant.CREATED.getMetaData())
 		{
 			CivilizationWorldData data = CivilizationWorldData.get(world);
-			Plot plot = CivilizationObjectFactory.createPlot(world, player.playerLocation);
+			Plot plot = CivilizationObjectFactory.createPlot(world, player.getPosition());
 			NBTTagCompound nbt = stack.getTagCompound();
 			String townName = nbt.getString("townname");
 			
