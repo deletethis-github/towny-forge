@@ -102,19 +102,31 @@ public class ItemTownBook extends Item
     {	
 		if(stack.getMetadata() == ItemTownBook.EnumVariant.CREATABLE.getMetaData())
 		{
-			CivilizationWorldData data = CivilizationWorldData.get(world);
-			Plot plot = CivilizationObjectFactory.createPlot(world, player.getPosition());
 			NBTTagCompound nbt = stack.getTagCompound();
+			
+			if(nbt == null)
+			{
+				nbt = new NBTTagCompound();
+				stack.setTagCompound(nbt);	
+			}
+
 			String townName = nbt.getString("townname");
 			
-			if(nbt == null || townName.isEmpty())
+			if(townName.isEmpty())
+			{
+				CivilizationMessageSender.send(player, EnumMessage.UNSPECIFIED_TOWN_NAME);
 				return stack;
+			}
+			
+			CivilizationWorldData data = CivilizationWorldData.get(world);
 			
 			if(data.townExists(townName))
 			{
 				CivilizationMessageSender.send(player, EnumMessage.TOWN_ALREADY_EXISTS, townName);
 				return stack;
 			}
+			
+			Plot plot = CivilizationObjectFactory.createPlot(world, player.getPosition());
 
 			if(plot.isOwned())
 			{
@@ -143,19 +155,30 @@ public class ItemTownBook extends Item
 		
 		if(stack.getMetadata() == ItemTownBook.EnumVariant.CREATED.getMetaData())
 		{
-			CivilizationWorldData data = CivilizationWorldData.get(world);
-			Plot plot = CivilizationObjectFactory.createPlot(world, player.getPosition());
 			NBTTagCompound nbt = stack.getTagCompound();
+			
+			if(nbt == null)
+			{
+				nbt = new NBTTagCompound();
+				stack.setTagCompound(nbt);	
+			}
+			
 			String townName = nbt.getString("townname");
 			
+			if(townName.isEmpty())
+				return stack;
+			
+			CivilizationWorldData data = CivilizationWorldData.get(world);
 			Town town = data.getTown(townName);
 			
-			if(nbt == null || townName.isEmpty() || town == null)
+			if(town == null)
 				return stack;
+			
+			Plot plot = CivilizationObjectFactory.createPlot(world, player.getPosition());
 			
 			if(town.hasPlot(plot))
 			{
-				CivilizationMessageSender.send(player, EnumMessage.YOU_ALREADY_OWN_PLOT, townName);
+				CivilizationMessageSender.send(player, EnumMessage.YOU_ALREADY_OWN_PLOT);
 				return stack;
 			}
 			
@@ -166,7 +189,7 @@ public class ItemTownBook extends Item
 			}
 			
 			town.addPlot(plot);
-			CivilizationMessageSender.send(player, EnumMessage.PLOT_ACQUIRED, townName);
+			CivilizationMessageSender.send(player, EnumMessage.PLOT_ACQUIRED);
 			
 			return stack;
 		}
@@ -174,25 +197,25 @@ public class ItemTownBook extends Item
 		return stack;
     }
 	
-	@Override
-	public void onCreated(ItemStack stack, World world, EntityPlayer player)
-	{
-		stack.setTagCompound(new NBTTagCompound());
-	}
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List tooltip, boolean advanced) 
 	{
 		NBTTagCompound nbt = stack.getTagCompound();
 		
-		if(nbt == null) return;
+		if(nbt == null)
+		{
+			nbt = new NBTTagCompound();
+			stack.setTagCompound(nbt);	
+		}
 		
 		String townName = nbt.getString("townname");
+		
 		if(!townName.isEmpty())
 		{
 			tooltip.add("Town: " + townName);
 		}
+		
 		String founder = nbt.getString("founder");
 		if(!founder.isEmpty())
 		{

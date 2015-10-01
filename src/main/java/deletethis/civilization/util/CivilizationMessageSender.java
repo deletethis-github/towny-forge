@@ -25,6 +25,7 @@ public class CivilizationMessageSender
 				message.appendSibling(townName);
 				message.appendText(" has been created!");
 				style.setColor(EnumChatFormatting.AQUA);
+				break;
 			}
 			case TOWN_ALREADY_EXISTS:
 			{
@@ -34,6 +35,7 @@ public class CivilizationMessageSender
 				message.appendSibling(townName);
 				message.appendText(" already exists!");
 				style.setColor(EnumChatFormatting.RED);
+				break;
 			}
 			case OTHER_ALREADY_OWN_PLOT:
 			{
@@ -43,16 +45,25 @@ public class CivilizationMessageSender
 				message.appendSibling(townName);
 				message.appendText("!");
 				style.setColor(EnumChatFormatting.RED);
+				break;
 			}
 			case YOU_ALREADY_OWN_PLOT:
 			{
 				message.appendText("You already own this plot!");
 				style.setColor(EnumChatFormatting.RED);
+				break;
 			}
 			case PLOT_ACQUIRED:
 			{
-				message.appendText("You already own this plot!");
+				message.appendText("Plot acquired!");
 				style.setColor(EnumChatFormatting.GREEN);
+				break;
+			}
+			case UNSPECIFIED_TOWN_NAME:
+			{
+				message.appendText("Town name is unspecified!");
+				style.setColor(EnumChatFormatting.RED);
+				break;
 			}
 		}
 		
