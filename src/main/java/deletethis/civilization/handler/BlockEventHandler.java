@@ -1,8 +1,8 @@
 package deletethis.civilization.handler;
 
-import deletethis.civilization.Plot;
-import deletethis.civilization.Resident;
-import deletethis.civilization.Town;
+import deletethis.civilization.object.Plot;
+import deletethis.civilization.object.Resident;
+import deletethis.civilization.object.Town;
 import deletethis.civilization.world.CivilizationWorldData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;

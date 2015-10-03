@@ -1,4 +1,4 @@
-package deletethis.civilization;
+package deletethis.civilization.object;
 
 import net.minecraft.nbt.NBTTagCompound;
 

@@ -2,11 +2,14 @@ package deletethis.civilization.world;
 
 import java.util.ArrayList;
 
-import deletethis.civilization.Town;
+import deletethis.civilization.object.Plot;
+import deletethis.civilization.object.Town;
+import deletethis.civilization.util.CivilizationObjectFactory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
+import net.minecraftforge.common.DimensionManager;
 
 public class CivilizationWorldData extends WorldSavedData
 {
@@ -47,10 +50,9 @@ public class CivilizationWorldData extends WorldSavedData
 	
 	public Town getTown(String name)
 	{
-		Town dummy = new Town(name);
 		for(Town town : towns)
 		{
-			if(town.equals(dummy))
+			if(town.getName().equals(name))
 			{
 				return town;
 			}
@@ -86,8 +88,35 @@ public class CivilizationWorldData extends WorldSavedData
 		return towns;
 	}
 	
+	public Plot getPlot(World world, int x, int z)
+	{
+		for(Town town : towns)
+		{
+			for(Plot plot : town.getPlots())
+			{
+				if(plot.getX() == x && plot.getZ() == z)
+				{
+					return plot;
+				}
+			}
+		}
+		return CivilizationObjectFactory.createPlot(world, x, z);
+	}
+	
 	public static CivilizationWorldData get(World world)
 	{
+		CivilizationWorldData data = (CivilizationWorldData)world.loadItemData(CivilizationWorldData.class, CivilizationWorldData.IDENTIFIER);
+		if(data == null)
+		{
+			data = new CivilizationWorldData(CivilizationWorldData.IDENTIFIER);
+			world.setItemData(CivilizationWorldData.IDENTIFIER, data);
+		}
+		return data;
+	}
+	
+	public static CivilizationWorldData get(int dimension)
+	{	
+		World world = (World)DimensionManager.getWorld(dimension);
 		CivilizationWorldData data = (CivilizationWorldData)world.loadItemData(CivilizationWorldData.class, CivilizationWorldData.IDENTIFIER);
 		if(data == null)
 		{

@@ -1,5 +1,8 @@
-package deletethis.civilization;
+package deletethis.civilization.util;
 
+import deletethis.civilization.object.Plot;
+import deletethis.civilization.object.Resident;
+import deletethis.civilization.object.Town;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
@@ -15,6 +18,7 @@ public class CivilizationObjectFactory
 		town.addResident(founderResident);
 		
 		Plot plot = createPlot(founder.worldObj, founder.getPosition());
+		plot.setTown(town);
 		town.addPlot(plot);
 		
 		return town;
@@ -22,9 +26,13 @@ public class CivilizationObjectFactory
 	
 	public static Plot createPlot(World world, BlockPos blockPos)
 	{
-        int dimension = world.provider.getDimensionId();
         int x = world.getChunkFromBlockCoords(blockPos).xPosition;
         int z = world.getChunkFromBlockCoords(blockPos).zPosition;
-        return new Plot(dimension, x, z);
+        return new Plot(world, x, z, null);
+	}
+	
+	public static Plot createPlot(World world, int x, int z)
+	{
+        return new Plot(world, x, z, null);
 	}
 }

@@ -1,4 +1,4 @@
-package deletethis.civilization;
+package deletethis.civilization.object;
 
 import java.util.ArrayList;
 
@@ -141,7 +141,6 @@ public class Town
 		Town that = (Town) object;
 		
 		if(!this.getName().equals(that.getName())) return false;
-		//if(!this.getResidents().equals(that.getResidents())) return false;
 		
 		return true;
 	}

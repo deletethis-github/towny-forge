@@ -1,27 +1,29 @@
-package deletethis.civilization;
+package deletethis.civilization.object;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.DimensionManager;
 
 public class Plot
 {
-	private int dimension;
+	private World world;
 	private int x, z;
 	private Town town;
 	
-	public Plot(int dimension, int x, int z)
+	public Plot(World world, int x, int z, Town town)
 	{
-		this.dimension = dimension;
+		this.world = world;
 		this.x = x;
 		this.z = z;
+		this.town = town;
 	}
 	
 	public boolean isInPlot(EntityPlayer player)
 	{
-		if(!(player.worldObj.provider.getDimensionId() == dimension)) return false;
+		if(player.worldObj != world) return false;
 		
 		int playerChunkX = player.worldObj.getChunkFromBlockCoords(player.playerLocation).xPosition;
 		int playerChunkZ = player.worldObj.getChunkFromBlockCoords(player.playerLocation).zPosition;
@@ -32,7 +34,7 @@ public class Plot
 	
 	public boolean isInPlot(World world, BlockPos pos)
 	{
-		if(!(world.provider.getDimensionId() == dimension)) return false;
+		if(this.world != world) return false;
 		
 		Chunk chunk = world.getChunkFromBlockCoords(pos);
 		return chunk.xPosition == this.x && chunk.zPosition == this.z;
@@ -40,27 +42,30 @@ public class Plot
 	
 	public void writeToNBT(NBTTagCompound nbt)
 	{
+		int dimension = world.provider.getDimensionId();
 		nbt.setInteger("dimension", dimension);
 		nbt.setInteger("x", x);
 		nbt.setInteger("z", z);
+		nbt.setString("town", town.getName());
 	}
 	
 	public static Plot readFromNBT(NBTTagCompound nbt)
-	{
+	{	
 		int dimension = nbt.getInteger("dimension");
 		int x = nbt.getInteger("x");
 		int z = nbt.getInteger("z");
-		return new Plot(dimension, x, z);
+		World world = DimensionManager.getWorld(dimension);
+		return new Plot(world, x, z, null);
 	}
 	
-	public void setDimension(int dimension)
+	public void setWorld(World world)
 	{
-		this.dimension = dimension;
+		this.world = world;
 	}
 	
-	public int getDimension()
+	public World getWorld()
 	{
-		return dimension;
+		return world;
 	}
 	
 	public void setX(int x)
@@ -83,11 +88,6 @@ public class Plot
 		return z;
 	}
 	
-	public boolean isOwned()
-	{
-		return town == null ? false : true;
-	}
-	
 	public void setTown(Town town)
 	{
 		this.town = town;
@@ -98,11 +98,16 @@ public class Plot
 		return town;
 	}
 	
+	public boolean isOwned()
+	{
+		return town == null ? false : true;
+	}
+	
 	@Override
 	public int hashCode()
 	{
 		int hash = 21;
-		hash *= 56 + dimension;
+		hash *= 56 + world.provider.getDimensionId();
 		hash *= 56 + x;
 		hash *= 56 + z;
 		return hash;

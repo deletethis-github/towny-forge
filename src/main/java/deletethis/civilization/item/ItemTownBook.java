@@ -2,10 +2,10 @@ package deletethis.civilization.item;
 
 import java.util.List;
 
-import deletethis.civilization.CivilizationObjectFactory;
-import deletethis.civilization.Plot;
-import deletethis.civilization.Town;
+import deletethis.civilization.object.Plot;
+import deletethis.civilization.object.Town;
 import deletethis.civilization.util.CivilizationMessageSender;
+import deletethis.civilization.util.CivilizationObjectFactory;
 import deletethis.civilization.util.EnumMessage;
 import deletethis.civilization.world.CivilizationWorldData;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -126,15 +127,19 @@ public class ItemTownBook extends Item
 				return stack;
 			}
 			
-			Plot plot = CivilizationObjectFactory.createPlot(world, player.getPosition());
+			Town town = CivilizationObjectFactory.createTown(townName, player);
+			
+			BlockPos blockPos = player.getPosition();
+	        int x = world.getChunkFromBlockCoords(blockPos).xPosition;
+	        int z = world.getChunkFromBlockCoords(blockPos).zPosition;
+			Plot plot = data.getPlot(world, x, z);
 
 			if(plot.isOwned())
 			{
-				CivilizationMessageSender.send(player, EnumMessage.OTHER_ALREADY_OWN_PLOT, townName);
+				CivilizationMessageSender.send(player, EnumMessage.OTHER_ALREADY_OWN_PLOT, plot.getTown().getName());
 				return stack;
 			}
 			
-			Town town = CivilizationObjectFactory.createTown(townName, player);
 			data.addTown(town);
 			
 			stack.setItemDamage(EnumVariant.CREATED.getMetaData());
@@ -175,8 +180,10 @@ public class ItemTownBook extends Item
 			if(town == null)
 				return stack;
 			
-			Plot plot = CivilizationObjectFactory.createPlot(world, player.getPosition());
-			plot.setTown(town);
+			BlockPos blockPos = player.getPosition();
+	        int x = world.getChunkFromBlockCoords(blockPos).xPosition;
+	        int z = world.getChunkFromBlockCoords(blockPos).zPosition;
+			Plot plot = data.getPlot(world, x, z);
 			
 			if(town.hasPlot(plot))
 			{
@@ -186,10 +193,11 @@ public class ItemTownBook extends Item
 			
 			if(plot.isOwned())
 			{
-				CivilizationMessageSender.send(player, EnumMessage.OTHER_ALREADY_OWN_PLOT, townName);
+				CivilizationMessageSender.send(player, EnumMessage.OTHER_ALREADY_OWN_PLOT, plot.getTown().getName());
 				return stack;
 			}
 			
+			plot.setTown(town);
 			town.addPlot(plot);
 			nbt.setString("plotCount", Integer.toString(town.getPlotCount()));
 			CivilizationMessageSender.send(player, EnumMessage.PLOT_ACQUIRED);
