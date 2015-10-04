@@ -1,4 +1,4 @@
-package deletethis.civilization.handler;
+package deletethis.civilization.eventhandler;
 
 import deletethis.civilization.object.Plot;
 import deletethis.civilization.object.Resident;

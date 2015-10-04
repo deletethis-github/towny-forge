@@ -1,6 +1,6 @@
 package deletethis.civilization.proxy;
 
-import deletethis.civilization.handler.BlockEventHandler;
+import deletethis.civilization.eventhandler.BlockEventHandler;
 import deletethis.civilization.item.ModItems;
 import net.minecraftforge.common.MinecraftForge;
 
