@@ -14,7 +14,7 @@ public class CivilizationObjectFactory
 		Town town = new Town(name);
 		
 		String uuid = founder.getGameProfile().getId().toString();
-		Resident founderResident = new Resident(uuid);
+		Resident founderResident = new Resident(uuid, town);
 		town.addResident(founderResident);
 		
 		Plot plot = createPlot(founder.worldObj, founder.getPosition());

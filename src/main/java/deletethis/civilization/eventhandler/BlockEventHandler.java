@@ -1,7 +1,6 @@
 package deletethis.civilization.eventhandler;
 
 import deletethis.civilization.object.Plot;
-import deletethis.civilization.object.Resident;
 import deletethis.civilization.object.Town;
 import deletethis.civilization.world.CivilizationWorldData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +16,6 @@ public class BlockEventHandler
 	public void onBlockBreak(BlockEvent.BreakEvent event)
 	{
 		EntityPlayer player = event.getPlayer();
-		Resident resident = new Resident(player.getGameProfile().getId().toString());
 		World world = player.worldObj;
 		BlockPos pos = event.pos;
 		CivilizationWorldData data = CivilizationWorldData.get(world);
@@ -28,9 +26,11 @@ public class BlockEventHandler
 			{
 				for(Plot plot : town.getPlots())
 				{
-					if(plot.isInPlot(world, pos) && !town.hasResident(resident))
+					if(plot.isInPlot(world, pos))
 					{
+						if (town.hasResident(player.getGameProfile().getId().toString())) break;
 						event.setCanceled(true);
+						break;
 					}
 				}
 			}
@@ -41,7 +41,6 @@ public class BlockEventHandler
 	public void onBlockPlaced(BlockEvent.PlaceEvent event)
 	{
 		EntityPlayer player = event.player;
-		Resident resident = new Resident(player.getGameProfile().getId().toString());
 		World world = player.worldObj;
 		BlockPos pos = event.pos;
 		CivilizationWorldData data = CivilizationWorldData.get(world);
@@ -52,9 +51,11 @@ public class BlockEventHandler
 			{
 				for(Plot plot : town.getPlots())
 				{
-					if(plot.isInPlot(world, pos) && !town.hasResident(resident))
+					if(plot.isInPlot(world, pos))
 					{
+						if (town.hasResident(player.getGameProfile().getId().toString())) break;
 						event.setCanceled(true);
+						break;
 					}
 				}
 			}

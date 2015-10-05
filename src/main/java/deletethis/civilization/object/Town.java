@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
 
 public class Town
 {	
@@ -82,6 +84,12 @@ public class Town
 		return residents.contains(resident);
 	}
 	
+	public boolean hasResident(String uuid)
+	{	
+		Resident resident = new Resident(uuid, null);
+		return residents.contains(resident);
+	}
+	
 	public void addResident(Resident resident)
 	{
 		residents.add(resident);
@@ -120,6 +128,18 @@ public class Town
 	public int getPlotCount()
 	{
 		return plots.size();
+	}
+	
+	public boolean isInTown(World world, BlockPos pos)
+	{
+		for(Plot plot : this.getPlots())
+		{
+			if(plot.isInPlot(world, pos))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	@Override

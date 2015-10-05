@@ -5,15 +5,32 @@ import net.minecraft.nbt.NBTTagCompound;
 public class Resident
 {
 	private String uuid;
+	private Town town;
 	
-	public Resident(String uuid)
+	public Resident(String uuid, Town town)
 	{
 		this.uuid = uuid;
+		this.town = town;
 	}
 	
 	public String getUUID()
 	{
 		return uuid;
+	}
+	
+	public void setUUID(String uuid)
+	{
+		this.uuid = uuid;
+	}
+	
+	public Town getTown()
+	{
+		return town;
+	}
+	
+	public void setTown(Town town)
+	{
+		this.town = town;
 	}
 	
 	public void writeToNBT(NBTTagCompound nbt)
@@ -24,7 +41,7 @@ public class Resident
 	public static Resident readFromNBT(NBTTagCompound nbt)
 	{
 		String uuid = nbt.getString("uuid");
-		return new Resident(uuid);		
+		return new Resident(uuid, null);		
 	}
 	
 	@Override

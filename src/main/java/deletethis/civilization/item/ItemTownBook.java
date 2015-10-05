@@ -2,6 +2,7 @@ package deletethis.civilization.item;
 
 import java.util.List;
 
+import deletethis.civilization.entity.item.EntityItemWithEventPosting;
 import deletethis.civilization.object.Plot;
 import deletethis.civilization.object.Town;
 import deletethis.civilization.util.CivilizationMessageSender;
@@ -9,6 +10,7 @@ import deletethis.civilization.util.CivilizationObjectFactory;
 import deletethis.civilization.util.EnumMessage;
 import deletethis.civilization.world.CivilizationWorldData;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -239,4 +241,18 @@ public class ItemTownBook extends Item
 			tooltip.add("Plots: " + plotCount);
 		}
 	}
+	
+	@Override
+    public boolean hasCustomEntity(ItemStack stack)
+    {
+        return true;
+    }
+	
+	@Override
+    public Entity createEntity(World world, Entity location, ItemStack stack)
+    {
+		EntityItemWithEventPosting entity = new EntityItemWithEventPosting(world, location.posX, location.posY, location.posZ, stack);
+		entity.setDefaultPickupDelay();
+        return entity;
+    }
 }
