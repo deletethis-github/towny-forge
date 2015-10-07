@@ -248,7 +248,8 @@ public class ItemTownBook extends Item
         return true;
     }
 	
-    public Entity createCustomEntity(World world, Entity previous, ItemStack stack)
+	@Override
+    public Entity createEntity(World world, Entity previous, ItemStack stack)
     {
 		EntityItemWithEventPosting entity = new EntityItemWithEventPosting(world, previous.posX, previous.posY, previous.posZ, stack);
         return entity;
