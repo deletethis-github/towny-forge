@@ -248,11 +248,9 @@ public class ItemTownBook extends Item
         return true;
     }
 	
-	@Override
-    public Entity createEntity(World world, Entity location, ItemStack stack)
+    public Entity createCustomEntity(World world, Entity previous, ItemStack stack)
     {
-		EntityItemWithEventPosting entity = new EntityItemWithEventPosting(world, location.posX, location.posY, location.posZ, stack);
-		entity.setDefaultPickupDelay();
+		EntityItemWithEventPosting entity = new EntityItemWithEventPosting(world, previous.posX, previous.posY, previous.posZ, stack);
         return entity;
     }
 }
