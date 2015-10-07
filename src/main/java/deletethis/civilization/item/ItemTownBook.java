@@ -33,13 +33,13 @@ public class ItemTownBook extends Item
 		private int metadata;
 		private String unlocalizedName;
 		
-		public static final EnumVariant[] index = new EnumVariant[values().length];
+		public static final EnumVariant[] variants = new EnumVariant[values().length];
 		
 		static
 		{
 			for (EnumVariant value : values())
 			{
-				index[value.getMetaData()] = value;
+				variants[value.getMetaData()] = value;
 			}
 		}
 		
@@ -63,7 +63,7 @@ public class ItemTownBook extends Item
 	
 	public static EnumVariant getVariantFromMetadata(int metadata)
 	{
-		return EnumVariant.index[metadata];
+		return EnumVariant.variants[metadata];
 	}
 	
 	public ItemTownBook()
@@ -94,7 +94,7 @@ public class ItemTownBook extends Item
 	@Override
 	public void getSubItems(Item item, CreativeTabs tab, @SuppressWarnings("rawtypes") List subItems) 
 	{
-		for(EnumVariant variant : EnumVariant.index)
+		for(EnumVariant variant : EnumVariant.variants)
 		{
 			subItems.add(new ItemStack(item, 1, variant.getMetaData()));
 		}
@@ -252,6 +252,6 @@ public class ItemTownBook extends Item
     public Entity createEntity(World world, Entity previous, ItemStack stack)
     {
 		EntityItemWithEventPosting entity = new EntityItemWithEventPosting(world, previous.posX, previous.posY, previous.posZ, stack);
-        return entity;
+		return entity;
     }
 }
